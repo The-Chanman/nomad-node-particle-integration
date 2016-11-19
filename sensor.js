@@ -4,6 +4,7 @@ const nomad = new Nomad()
 const fetch = require('node-fetch')
 
 let instance = null
+const frequency = 60 * 60 * 1000
 
 // parse into url object 
 let base = 'http://erddap.exploratorium.edu:8080/erddap/tabledap/exploreusgsdata.json?time,temperature,specific_conductance,salinity,turbidity,dissolved_o2,station_id,latitude,longitude&time>='
@@ -54,6 +55,6 @@ nomad.prepareToPublish().then((n) => {
     .catch(err => {
       console.log(`Error: ${err}`)
     })
-  }, 60000)  
+  }, frequency)  
 })
 
