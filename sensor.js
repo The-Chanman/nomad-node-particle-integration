@@ -7,12 +7,12 @@ let instance = null
 const frequency = 60 * 60 * 1000
 
 // parse into url object 
-let base = 'http://erddap.exploratorium.edu:8080/erddap/tabledap/explorebeaconbay5min.htmlTable?time%2CTemperature_1%2CAir_Pressure%2CTemperature_2%2CRelative_Humidity%2CDew_Point%2CO3_1%2CCO_1%2CNO2_1%2CO3_Working_2%2CO3_Auxiliary_2%2CCO_Working_2%2CCO_Auxiliary_2%2CNO_Working%2CNO_Auxiliary%2CNO_Auxiliary_2%2CNO2_Working_2%2CNO2_Auxiliary_2%2CParticulate_high%2CParticulate_total%2CParticulate_pct%2CCO2%2CTemperature_3%2Cstation_id%2Clatitude%2Clongitudetime>='
+let base = 'http://erddap.exploratorium.edu:8080/erddap/tabledap/explorebeaconbay5min.json?time,Temperature_1,Air_Pressure,Temperature_2,Relative_Humidity,Dew_Point,O3_1,CO_1,NO2_1,O3_Working_2,O3_Auxiliary_2,CO_Working_2,CO_Auxiliary_2,NO_Working,NO_Auxiliary,NO_Auxiliary_2,NO2_Working_2,NO2_Auxiliary_2,Particulate_high,Particulate_total,Particulate_pct,CO2,Temperature_3,station_id,latitude,longitude&time>='
 //'http://erddap.exploratorium.edu:8080/erddap/tabledap/exploreusgsdata.json?time,temperature,specific_conductance,salinity,turbidity,dissolved_o2,station_id,latitude,longitude&time>='
 
 function buildUrl() {
   const d = new moment()
-  const hourAgo = d.subtract(1, 'h')
+  const hourAgo = d.subtract(2, 'h')
   const timeString = hourAgo.toISOString()
   const url = `${base}${timeString}`
   const encoded = encodeURI(url)
@@ -32,6 +32,7 @@ function transform(json) {
 function getMessage() {
   const url = buildUrl()
   return fetch(url).then(res => {
+  	console.log(res.body)
     return res.json();
   }).then(json => {
     const formatted = transform(json)
@@ -58,4 +59,5 @@ nomad.prepareToPublish().then((n) => {
     })
   }, frequency)  
 })
+
 

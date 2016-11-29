@@ -1,7 +1,8 @@
 {
-  "name": "exploratorium-sf-bay-water",
+  "name": "exploratorium-sf-beacon-bay",
+  "nomadName": "exploratorium-sf-beacon-bay",
   "version": "1.0.0",
-  "description": "San Francisco Bay Water sensor at the Exploratorium. Sourced from http://erddap.exploratorium.edu:8080/erddap",
+  "description": "San Francisco Bay BEACON sensor (Bay Side)  at the Exploratorium. Sourced from http://erddap.exploratorium.edu:8080/erddap",
   "main": "sensor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/IDEO-coLAB/nomad-sensor-hello.git"
   },
-  "author": "Reid Williams <rwilliams@ideo.com>",
+  "author": "Eric Chan <echan@ideo.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/IDEO-coLAB/nomad-sensor-hello/issues"
