@@ -12,38 +12,45 @@ const nomad = new Nomad()
 //IDEO Münich
 const deviceID = '370034000f47343432313031'
 
-// Pub data
-// let pubdata = {Gas: "", Gas_Time: "", UV: "", UV_Time: ""}
-
-// [Gas,UV,Time]
-
-class MessageToPublish {
-  constructor(arrayOfEventNames){
-    this.data = {}
-    for (let value of arrayOfEventNames){
-      this.data[value]
-    }
-  }
-
-
-}
-
-
 let currentPublishData = null
-const defaultPublishData = { gas: "", gasTime: "", uv: "", uvTime: "" }
+let instance = null
+let lastPub = null
 
+const defaultPublishData = { Gas: "", GasUnits: "parts per million", GasTime: "", UV: "", UVUnits: "nm", UVTime: "" }
+const timeBetween = 10 * 1000 //10 seconds
+const timeThreshold = 30 * 60 * 1000 // 30 minutes
 
+class DataMaintainer {
+  constructor(){
+    currentPublishData = defaultPublishData
+  }
+  setValue(key, value){
+    if(currentPublishData === undefined){
+      console.log('Recieved invalid key:', key)
+      break
+    }
+    currentPublishData[key] = value
+  }
+  getAll(){
+    return currentPublishData
+  }
+  isAllFilled(){
+    return currentPublishData["gas"] && currentPublishData["gasTime"] && currentPublishData["uv"] && currentPublishData[uvTime]
+  }
+  clear(){
+    currentPublishData = defaultPublishData
+  }
+  toString(){
+    return JSON.stringify(currentPublishData)
+  }
+}
 
 function setTime() {
   return new moment()
 }
 
-
-let instance = null
-let lastPub = null
-const timeBetween = 10 * 1000 //10 seconds
-const timeThreshold = 30 * 60 * 1000 // 30 minutes
-
+//init data manager
+let dataManager = new DataMaintainer()
 
 particle.login(credentials).then(res => {
     let token = res.body.access_token
@@ -64,46 +71,31 @@ particle.login(credentials).then(res => {
     stream.on('event', data => {
       // console.log(data)
       console.log(data)
-
-
-
-      // switch(data.name) {
-      //   case 'Gas':
-      //     pubdata.Gas = data.data
-      //     pubdata.Gas_Time = data.published_at
-      //     console.log(data)
-      //     break;
-      //   case 'UV':
-      //     pubdata.UV = data.data
-      //     pubdata.UV_Time = data.published_at
-      //     console.log(data)
-      //     break;
-      //   default:
-      //     console.log(data.name + " is value of " + data.data + " but not accounted for right now.")
-      }
+      dataManager.setValue(data.name, data.data)
+      dataManager.setValue(data.name + "Time", data.published_at)
       // this determines frequency of transmission 
       let currentTime = setTime()
       let timeSince = currentTime - lastPub
       if (timeSince >= timeBetween){
-        if (pubdata.Gas === "" || pubdata.Gas_Time === "" || pubdata.UV === "" || pubdata.UV_Time === ""){
-          
-        } else {
+        if (dataManager.isAllFilled){
         // publish if everything is full
         console.log("***************************************************************************************")
-        console.log(pubdata)
+        console.log(dataManager.getAll())
         console.log("***************************************************************************************")
 
-        instance.publish(JSON.stringify(pubdata))
+        instance.publish(dataManager.toString())
           .catch(err => console.log(`Error: ${JSON.stringify(err)}`))
-        pubdata = {Gas: "", Gas_Time: "", UV: "", UV_Time: ""}
+        dataManager.clear()  
         lastPub = currentTime
         }
       }
       // if haven't receieved anything in the time frame
       if (timeSince >= timeThreshold){
         //publish what we got
-        instance.publish(JSON.stringify(pubdata))
+        instance.publish(dataManager.toString())
           .catch(err => console.log(`Error: ${JSON.stringify(err)}`))
+        dataManager.clear()  
+        lastPub = currentTime
       }
 
     })
