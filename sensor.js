@@ -38,8 +38,8 @@ const defaultPublishData = {
     time: "",
   }
 }
-const timeBetween = 10 * 1000 //10 seconds
-const timeThreshold = 30 * 60 * 1000 // 30 minutes
+const timeBetween = 15 * 60 * 1000 //15 minutes
+const timeThreshold = 4 * 60 * 60 * 1000 // 4 minutes
 
 class DataMaintainer {
   constructor(){
