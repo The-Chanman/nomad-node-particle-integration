@@ -10,7 +10,7 @@ const nomad = new Nomad()
 
 //Particle Device Setup
 //IDEO Münich
-const deviceID = '370034000f47343432313031'
+const deviceID = '24003e000947343432313031'
 
 let instance = null
 let lastPub = null

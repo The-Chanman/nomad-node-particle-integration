@@ -1,8 +1,8 @@
 {
-  "name": "IDEO-Münich-Particle-Sensors",
-  "nomadName": "IDEO-Münich-Particle-Sensors",
+  "name": "IDEO-SF-Particle-Sensors",
+  "nomadName": "IDEO-SF-Particle-Sensors",
   "version": "1.0.0",
-  "description": "IDEO Münich data: Gas, UV, Temperature, Humidity, Motion",
+  "description": "IDEO SF data: Gas, UV, Temperature, Humidity, Motion",
   "main": "sensor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
