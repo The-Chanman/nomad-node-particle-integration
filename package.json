@@ -19,7 +19,6 @@
   "homepage": "https://github.com/The-Chanman/nomad-node-particle-integration#readme",
   "dependencies": {
     "moment": "^2.16.0",
-    "node-fetch": "^1.6.3",
     "nomad-stream": "0.0.6",
     "particle-api-js": "^6.4.0"
   }

@@ -1,6 +1,5 @@
 const Nomad = require('nomad-stream')
 const moment = require('moment')
-const fetch = require('node-fetch')
 const Particle = require('particle-api-js')
 
 const credentials = require('./particle-login')
